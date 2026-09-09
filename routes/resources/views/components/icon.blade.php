@@ -1,0 +1,46 @@
+@props(['name', 'size' => 15])
+@php
+$paths = [
+    'wave' => '<path d="M8 13V6.5a1.5 1.5 0 0 1 3 0V11"/><path d="M11 11V4.5a1.5 1.5 0 0 1 3 0V11"/><path d="M14 11V6.5a1.5 1.5 0 0 1 3 0V13"/><path d="M5 13V9.5a1.5 1.5 0 0 1 3 0v6a6 6 0 0 0 6 6h2a6 6 0 0 0 6-6v-4"/>',
+    'medal' => '<circle cx="12" cy="15" r="6"/><path d="m9 11-3-7 2-2 4 4"/><path d="m15 11 3-7-2-2-4 4"/><path d="M12 12v6"/>',
+    'trophy' => '<path d="M8 4h8v4a4 4 0 0 1-8 0V4Z"/><path d="M8 5H5a2 2 0 0 0 2 4"/><path d="M16 5h3a2 2 0 0 1-2 4"/><path d="M12 12v5"/><path d="M9 20h6"/>',
+    'check-circle' => '<circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 5-5"/>',
+    'book' => '<path d="M4 5.5a2 2 0 0 1 2-2h5.5v17H6a2 2 0 0 1-2-2Z"/><path d="M20 5.5a2 2 0 0 0-2-2h-5.5v17H18a2 2 0 0 0 2-2Z"/>',
+    'clock' => '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/>',
+    'refresh' => '<path d="M3 12a9 9 0 0 1 15.5-6.3L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15.5 6.3L3 16"/><path d="M3 21v-5h5"/>',
+    'target' => '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+    'users' => '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.5 3-6 6.5-6s6.5 2.5 6.5 6"/><circle cx="17.5" cy="8.5" r="3"/><path d="M15.5 14.3c2.8.5 5 2.7 5 5.7"/>',
+    'list' => '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8"/><path d="M8 13h8"/><path d="M8 17h4"/>',
+    'clipboard-check' => '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 3.5h6a1 1 0 0 1 1 1V6H8V4.5a1 1 0 0 1 1-1Z"/><path d="m9 13 2 2 4-4"/>',
+    'x-circle' => '<circle cx="12" cy="12" r="9"/><path d="m9 9 6 6"/><path d="m15 9-6 6"/>',
+    'download' => '<path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>',
+    'chart-bar' => '<path d="M4 20V10"/><path d="M12 20V4"/><path d="M20 20v-7"/>',
+    'calculator' => '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8"/><path d="M8 12h.01"/><path d="M12 12h.01"/><path d="M16 12h.01"/><path d="M8 16h.01"/><path d="M12 16h.01"/><path d="M16 16h.01"/>',
+    'grid' => '<rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/>',
+    'alert-triangle' => '<path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 2 18a1.5 1.5 0 0 0 1.3 2.2h17.4A1.5 1.5 0 0 0 22 18L13.7 3.9a1.5 1.5 0 0 0-2.6 0Z"/>',
+    'music' => '<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>',
+    'save' => '<path d="M5 4h11l3 3v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1Z"/><path d="M8 4v5h8V4"/><path d="M8 21v-6h8v6"/>',
+    'plus' => '<path d="M12 5v14"/><path d="M5 12h14"/>',
+    'volume' => '<path d="M4 9v6h4l5 4V5L8 9H4Z"/><path d="M16.5 8.5a5 5 0 0 1 0 7"/>',
+    'id-card' => '<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="12" r="2"/><path d="M7 16.5c0-1.4 1-2.5 2-2.5s2 1.1 2 2.5"/><path d="M14 10h4"/><path d="M14 14h4"/>',
+    'lock' => '<rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+    'key' => '<circle cx="8" cy="15" r="4"/><path d="m10.8 12.2 8.7-8.7"/><path d="m16.5 6.5 2.5 2.5"/><path d="m14 9 2.5 2.5"/>',
+    'eye' => '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
+    'eye-off' => '<path d="M3 3l18 18"/><path d="M10.6 5.2A9.9 9.9 0 0 1 12 5c6.5 0 10 7 10 7a15.2 15.2 0 0 1-3.4 4.3"/><path d="M6.5 6.6C4 8.2 2 12 2 12s3.5 7 10 7a9.7 9.7 0 0 0 3.9-.8"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>',
+    'backpack' => '<path d="M9 4h6a1 1 0 0 1 1 1v2a4 4 0 0 1-8 0V5a1 1 0 0 1 1-1Z"/><path d="M6 9.5A2.5 2.5 0 0 1 8.5 7h7A2.5 2.5 0 0 1 18 9.5V19a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V9.5Z"/><path d="M9 13h6"/><path d="M10 22v-4h4v4"/>',
+    'user' => '<circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>',
+    'graduation-cap' => '<path d="M2 9l10-4 10 4-10 4-10-4Z"/><path d="M6 11v4c0 1.5 2.7 3 6 3s6-1.5 6-3v-4"/><path d="M22 9v6"/>',
+    'search' => '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.3-4.3"/>',
+    'sparkles' => '<path d="M12 3v4"/><path d="M12 17v4"/><path d="M3 12h4"/><path d="M17 12h4"/><path d="m6 6 2.5 2.5"/><path d="m15.5 15.5 2.5 2.5"/><path d="m18 6-2.5 2.5"/><path d="m8.5 15.5-2.5 2.5"/>',
+    'gear' => '<circle cx="12" cy="12" r="3"/><path d="M12 3v2M12 19v2M5 12H3M21 12h-2M6 6 4.6 4.6M19.4 19.4 18 18M18 6l1.4-1.4M4.6 19.4 6 18"/>',
+    'ruler' => '<path d="M4 4h16v16H4Z"/><path d="M9 4v4"/><path d="M14 4v4"/><path d="M4 9h4"/><path d="M4 14h4"/>',
+    'bell' => '<path d="M6 9a6 6 0 0 1 12 0v5l2 3H4l2-3Z"/><path d="M10 19a2 2 0 0 0 4 0"/>',
+    'chevron-left' => '<path d="m15 5-7 7 7 7"/>',
+    'chevron-right' => '<path d="m9 5 7 7-7 7"/>',
+    'x' => '<path d="M18 6 6 18"/><path d="M6 6l12 12"/>',
+    'edit' => '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+];
+@endphp
+<svg width="{{ $size }}" height="{{ $size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:-2.5px;flex-shrink:0">
+    {!! $paths[$name] ?? '' !!}
+</svg>
