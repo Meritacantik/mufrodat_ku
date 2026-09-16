@@ -35,7 +35,13 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
 });
 
 Route::get('/', function () {
-    return view('welcome');
+    if (auth()->check()) {
+        if (auth()->user()->role === 'admin') {
+            return redirect('/admin');
+        }
+        return redirect('/dashboard');
+    }
+    return view('landing');
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
