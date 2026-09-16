@@ -275,8 +275,10 @@
     /* CONTENT */
     .content {
       padding: 24px;
-      overflow: auto;
-      flex: 1
+      overflow-y: auto;
+      overflow-x: hidden;
+      flex: 1;
+      max-width: 100%
     }
 
     .page-title {
@@ -397,7 +399,10 @@
       background: white;
       border: 1px solid var(--gray-200);
       border-radius: var(--rl);
-      padding: 16px
+      padding: 16px;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch
     }
 
     .card-title {
@@ -738,6 +743,7 @@
     /* TABLES */
     .tbl {
       width: 100%;
+      min-width: 480px;
       border-collapse: collapse;
       font-size: 12px
     }
