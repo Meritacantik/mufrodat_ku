@@ -989,12 +989,117 @@
       background: var(--gray-100);
       color: var(--gray-500)
     }
+
+    /* MOBILE MENU TOGGLE (hidden on desktop) */
+    .sb-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      color: var(--gray-700);
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0
+    }
+
+    .sb-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .45);
+      z-index: 150
+    }
+
+    .sb-backdrop.show {
+      display: block
+    }
+
+    /* RESPONSIVE: TABLET & MOBILE */
+    @media (max-width: 860px) {
+      html {
+        overflow-x: hidden
+      }
+
+      body {
+        overflow-x: hidden
+      }
+
+      .sb-toggle {
+        display: inline-flex
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 220px;
+        transform: translateX(-100%);
+        transition: transform .25s ease;
+        z-index: 200
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+        box-shadow: 6px 0 24px rgba(0, 0, 0, .25)
+      }
+
+      .main {
+        width: 100%;
+        min-width: 0
+      }
+
+      .topbar {
+        padding: 0 14px;
+        gap: 10px
+      }
+
+      .topbar-title {
+        font-size: 14px
+      }
+
+      .topbar-search {
+        display: none
+      }
+
+      .content {
+        padding: 16px
+      }
+
+      .stat-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px
+      }
+
+      .grid2 {
+        grid-template-columns: 1fr
+      }
+
+      .grid3 {
+        grid-template-columns: 1fr
+      }
+    }
+
+    @media (max-width: 420px) {
+      .stat-val {
+        font-size: 17px
+      }
+
+      .stat-label {
+        font-size: 9.5px
+      }
+
+      .stat-c {
+        padding: 12px 10px 10px
+      }
+    }
   </style>
   @yield('styles')
 </head>
 
 <body>
-  <div class="sidebar {{ request()->is('admin*') ? 'admin' : '' }}">
+  <div class="sb-backdrop" id="sb-backdrop" onclick="closeSidebar()"></div>
+  <div class="sidebar {{ request()->is('admin*') ? 'admin' : '' }}" id="sidebar">
     <div class="sb-brand">
       <div class="sb-logo">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color:white">
@@ -1119,6 +1224,11 @@
 
   <div class="main {{ request()->is('admin*') ? 'admin' : '' }}">
     <div class="topbar">
+      <button class="sb-toggle" onclick="toggleSidebar()" aria-label="Buka menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 6h18" /><path d="M3 12h18" /><path d="M3 18h18" />
+        </svg>
+      </button>
       <div class="topbar-title">@yield('title', 'Dashboard')</div>
       <div class="topbar-right">
         @if(request()->is('admin*'))
@@ -1172,6 +1282,19 @@
       if (!e.target.closest('.avatar') && !e.target.closest('#avatar-dd')) {
         document.getElementById('avatar-dd').classList.remove('show');
       }
+    });
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sb-backdrop').classList.toggle('show');
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('open');
+      document.getElementById('sb-backdrop').classList.remove('show');
+    }
+    // Tutup sidebar otomatis saat salah satu menu diklik (mobile)
+    document.querySelectorAll('.sidebar .sb-item').forEach(function (el) {
+      el.addEventListener('click', closeSidebar);
     });
   </script>
   @yield('scripts')
