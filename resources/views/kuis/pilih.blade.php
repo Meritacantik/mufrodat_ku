@@ -46,14 +46,14 @@
         <input type="hidden" name="kelas" value="{{ $kelasUser }}">
         <input type="hidden" name="bab" value="{{ $b->bab }}">
         @if($b->soal_dikerjakan === 0)
-        <button type="submit" class="stat-c stat-white" style="border:1px solid var(--gray-200);cursor:pointer;text-align:left;width:100%;font-family:inherit;opacity:.75">
-            <div style="font-size:10px;color:var(--gray-400);margin-bottom:4px">Bab {{ $b->bab }}</div>
-            <div style="font-weight:700;font-size:14px;margin-bottom:10px;color:var(--gray-700)">{{ $b->judul }}</div>
+        <button type="submit" class="stat-c {{ $warnaCard[$i % 3] }}" style="border:none;cursor:pointer;text-align:left;width:100%;font-family:inherit;opacity:.85">
+            <div style="font-size:10px;opacity:.85;margin-bottom:4px">Bab {{ $b->bab }}</div>
+            <div style="font-weight:700;font-size:14px;margin-bottom:10px">{{ $b->judul }}</div>
             <div class="btn-row" style="justify-content:space-between;margin-bottom:6px">
-                <span style="font-size:11px;color:var(--gray-400)">{{ $b->soal_dikerjakan }}/{{ $b->total_soal }} soal</span>
-                <span style="font-size:11px;color:var(--gray-400)">{{ $b->persen }}%</span>
+                <span style="font-size:11px">{{ $b->soal_dikerjakan }}/{{ $b->total_soal }} soal</span>
+                <span style="font-size:11px">{{ $b->persen }}%</span>
             </div>
-            <div class="progress-bar"><div class="progress-fill" style="width:{{ $b->persen }}%"></div></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:{{ $b->persen }}%;background:white"></div></div>
         </button>
         @else
         <button type="submit" class="stat-c {{ $warnaCard[$i % 3] }}" style="border:none;cursor:pointer;text-align:left;width:100%;font-family:inherit">
