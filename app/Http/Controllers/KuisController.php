@@ -49,10 +49,9 @@ class KuisController extends Controller
             })
             ->values();
 
-        $babSebelumnyaSelesai = true;
-        $babs = $babs->map(function ($b) use (&$babSebelumnyaSelesai) {
-            $b->terkunci = !$babSebelumnyaSelesai;
-            $babSebelumnyaSelesai = $b->persen >= 100;
+        // Semua bab dibuka tanpa perlu menyelesaikan bab sebelumnya.
+        $babs = $babs->map(function ($b) {
+            $b->terkunci = false;
             return $b;
         });
 
@@ -99,31 +98,10 @@ class KuisController extends Controller
             }
         }
 
-        $babUrutan = Mufrodat::selectRaw('bab, count(*) as total_soal')
-            ->where('kelas', $request->kelas)
-            ->groupBy('bab')
-            ->orderBy('bab')
-            ->get()
-            ->reject(fn($row) => \App\Models\BabStatus::where('kelas', $request->kelas)
-                ->where('bab', $row->bab)->where('status', 'draf')->exists());
-
-        $babSebelumnyaSelesai = true;
-        foreach ($babUrutan as $row) {
-            $dikerjakan = QuizAnswer::whereHas('session', fn($q) =>
-                $q->where('user_id', Auth::id())
-                    ->where('kelas', $request->kelas)
-                    ->where('bab', $row->bab)
-            )->distinct('mufrodat_id')->count('mufrodat_id');
-            $persen = $row->total_soal > 0 ? round((min($dikerjakan, $row->total_soal) / $row->total_soal) * 100) : 0;
-
-            if ((int) $row->bab === (int) $request->bab) {
-                if (!$babSebelumnyaSelesai) {
-                    return back()->with('error', 'Selesaikan bab sebelumnya dulu sebelum membuka bab ini.');
-                }
-                break;
-            }
-            $babSebelumnyaSelesai = $persen >= 100;
-        }
+        // Catatan: pengecekan "bab sebelumnya harus selesai dulu" sudah
+        // dihapus, jadi siswa bisa langsung membuka bab mana pun (selama
+        // bab tersebut tidak berstatus draf) tanpa harus menyelesaikan
+        // bab 1 lebih dulu.
 
         $sudahDijawab = QuizAnswer::whereHas('session', fn($q) =>
             $q->where('user_id', Auth::id())
@@ -335,16 +313,8 @@ class KuisController extends Controller
 
         $saran = [];
         if ($hasil['status'] !== 'BENAR') {
-            // Kandidat saran diambil dari BAB yang sama (bukan seluruh kelas)
-            // supaya relevan dengan konteks soal yang sedang dikerjakan, dan
-            // kata target (jawaban benar soal ini) SENGAJA IKUT dibandingkan
-            // -- tidak lagi dikecualikan -- karena justru itulah kata yang
-            // paling mungkin dimaksud siswa saat mereka typo. Mengecualikan
-            // kata target hanya membuat "Mungkin maksudmu" menyodorkan kata
-            // lain yang kebetulan mirip secara string tapi tidak relevan
-            // dengan maksud soal.
-            $kandidat = Mufrodat::where('kelas', $mufrodat->kelas)
-                ->where('bab', $mufrodat->bab)
+            $saran = Mufrodat::where('kelas', $mufrodat->kelas)
+                ->where('id', '!=', $mufrodat->id)
                 ->get()
                 ->map(function ($m) use ($jawabanBersih) {
                     $latinBersih = $this->levenshtein->preprocessing($m->latin);
@@ -354,16 +324,7 @@ class KuisController extends Controller
                     ];
                 })
                 ->sortBy('jarak')
-                ->unique('latin');
-
-            // Batas kewajaran: jangan tampilkan saran yang jaraknya jauh dari
-            // input siswa hanya supaya kotak "Mungkin maksudmu" selalu terisi.
-            // Kalau tidak ada kandidat yang benar-benar dekat, lebih baik
-            // kosong daripada menyesatkan.
-            $batasWajar = max($threshold + 2, (int) ceil(strlen($jawabanBersih) / 2));
-
-            $saran = $kandidat
-                ->filter(fn($k) => $k['jarak'] <= $batasWajar)
+                ->unique('latin')
                 ->take(3)
                 ->pluck('latin')
                 ->values();
